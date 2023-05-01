@@ -161,11 +161,10 @@ The pre-trained ASR models and lip-to-speech synthesis models on LRS2 and LRS3 a
 
 | Model |       Dataset       |   STOI   |
 |:-------------------:|:-------------------:|:--------:|
-|ASR|LRS2 |   [0.407](https://kaistackr-my.sharepoint.com/:u:/g/personal/ms_k_kaist_ac_kr/EU6QAhptiR9Ns-WRVghuHYwBA_22Wp4EMr0O3LWZkQjnpw?e=qwkAu9)  |
-|ASR|LRS3 |   [0.474](https://kaistackr-my.sharepoint.com/:u:/g/personal/ms_k_kaist_ac_kr/EXnSqRowtL5PiOyk1UL2qK4BgmCvRF4WAZhmi5v6qY0RlA?e=XlBFGC)  |
-|:-------------------:|:-------------------:|:--------:|
-|Lip2Speech|LRS2 |   [0.407](https://kaistackr-my.sharepoint.com/:u:/g/personal/ms_k_kaist_ac_kr/EU6QAhptiR9Ns-WRVghuHYwBA_22Wp4EMr0O3LWZkQjnpw?e=qwkAu9)  |
-|Lip2Speech|LRS3 |   [0.474](https://kaistackr-my.sharepoint.com/:u:/g/personal/ms_k_kaist_ac_kr/EXnSqRowtL5PiOyk1UL2qK4BgmCvRF4WAZhmi5v6qY0RlA?e=XlBFGC)  |
+|ASR|LRS2 |   [Link](https://kaistackr-my.sharepoint.com/:u:/g/personal/ms_k_kaist_ac_kr/EYjyTk0Bxy9CqLVmshqVXWEBlZc2Tq_4JnC4ox1tQ7jXOA?e=s8rZMW)  |
+|ASR|LRS3 |   [Link](https://kaistackr-my.sharepoint.com/:u:/g/personal/ms_k_kaist_ac_kr/EcPkEXJ9UgNInxbJX_eh5aYBoZDLnxMY8AAEDNEiyBEJjw?e=uytxOK)  |
+|Lip2Speech|LRS2 |   [0.526](https://kaistackr-my.sharepoint.com/:u:/g/personal/ms_k_kaist_ac_kr/EWD7vxY4S7pPjNE8dUwSMJwBdgPFunw62HsDLIuUlWcKAQ?e=XYdHfn)  |
+|Lip2Speech|LRS3 |   [0.497](https://kaistackr-my.sharepoint.com/:u:/g/personal/ms_k_kaist_ac_kr/Ea9mi0aKAa1Gu53jTKiQV0IB6x7s2rI1mG9hkgBdBCYWWg?e=SRcK6o)  |
 
 
 ## Citation
