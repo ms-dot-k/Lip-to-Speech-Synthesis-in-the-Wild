@@ -5,7 +5,7 @@ This repository contains the PyTorch implementation of the following paper:
 > Minsu Kim, Joanna Hong, and Yong Man Ro<br>
 > \[[Paper](https://arxiv.org/abs/2302.08841)\] \[[Demo Video](https://github.com/joannahong/Lip-to-Speech-Synthesis-in-the-Wild)\]
 
-<div align="center"><img width="75%" src="img/Img.PNG?raw=true" /></div>
+<div align="center"><img width="50%" src="img/Img.PNG?raw=true" /></div>
 
 ## Requirements
 - python 3.7
