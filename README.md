@@ -24,6 +24,7 @@ This repository contains the PyTorch implementation of the following paper:
 - pesq
 - scipy
 - einops
+- ctcdecode
 
 ### Datasets
 #### Download
