@@ -23,6 +23,7 @@ This repository contains the PyTorch implementation of the following paper:
 - pystoi
 - pesq
 - scipy
+- einops
 
 ### Datasets
 #### Download
