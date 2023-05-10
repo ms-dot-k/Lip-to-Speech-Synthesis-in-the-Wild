@@ -157,7 +157,7 @@ Descriptions of training parameters are as follows:
 
 
 ## Pre-trained model checkpoints
-The pre-trained ASR models and lip-to-speech synthesis models on LRS2 and LRS3 are available. <br>
+The pre-trained ASR models for output-level content supervision and lip-to-speech synthesis models on LRS2 and LRS3 are available. <br>
 
 | Model |       Dataset       |   STOI   |
 |:-------------------:|:-------------------:|:--------:|
