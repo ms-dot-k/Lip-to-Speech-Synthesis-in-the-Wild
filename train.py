@@ -30,6 +30,7 @@ def parse_args():
     parser.add_argument('--data', default="Data_dir")
     parser.add_argument('--data_name', default="LRS2", help='LRS2, LRS3')
     parser.add_argument("--checkpoint_dir", type=str, default='./data/checkpoints/')
+    parser.add_argument("--visual_front_checkpoint", type=str, default=None)
     parser.add_argument("--checkpoint", type=str, default=None)
     parser.add_argument("--asr_checkpoint", type=str, default=None)
 
@@ -99,6 +100,12 @@ def train_net(args):
     else:
         asr_model = None
 
+    if args.visual_front_checkpoint is not None:
+        print(f"Loading checkpoint: {args.visual_front_checkpoint}")
+        checkpoint = torch.load(args.visual_front_checkpoint, map_location=lambda storage, loc: storage.cuda())
+        v_front.load_state_dict(checkpoint, strict=False)
+        del checkpoint
+        
     if args.checkpoint is not None:
         print(f"Loading checkpoint: {args.checkpoint}")
         checkpoint = torch.load(args.checkpoint, map_location=lambda storage, loc: storage.cuda())
