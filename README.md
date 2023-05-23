@@ -79,6 +79,13 @@ Moreover, put the train/val/test splits to <br>
 For the LRS2, we use the original splits of the dataset provided. [LRS2](https://kaistackr-my.sharepoint.com/:u:/g/personal/ms_k_kaist_ac_kr/EYr_pFzvluxJumdVbQ7c6iwB0Va7rRheS-NIZigZMejOyQ?e=WYsPvX) <br>
 For the LRS3, we use the unseen splits setting of [SVTS](https://arxiv.org/abs/2205.02058), where they are placed in the directory already.
 
+## Pretrained Visual Frontend
+Training to read sentences using CTC loss is hard to find optimization points. <br>
+We provide the visual frontend pre-trained on LRS2 and LRS3 using CTC. When you training from scratch, it is good to initialize the visual frontend with the checkpoints below.
+
+[LRS2](https://kaistackr-my.sharepoint.com/:u:/g/personal/ms_k_kaist_ac_kr/EVMp4Hih20hAqyP-I-z03rQBeJELI-KIEGuOMclCJ_Nhfg?e=YuHv44)
+[LRS3](https://kaistackr-my.sharepoint.com/:u:/g/personal/ms_k_kaist_ac_kr/Ea9mi0aKAa1Gu53jTKiQV0IB6x7s2rI1mG9hkgBdBCYWWg?e=vJXma3)
+
 ## Training the Model
 `data_name` argument is used to choose which dataset will be used. (LRS2 or LRS3) <br>
 To train the model, run following command:
@@ -89,6 +96,7 @@ python train.py \
 --data '/data_dir_as_like/LRS2-BBC' \
 --data_name 'LRS2'
 --checkpoint_dir 'enter_the_path_to_save' \
+--visual_front_checkpoint 'enter_the_visual_front_checkpoint' \
 --asr_checkpoint 'enter_pretrained_ASR' \
 --batch_size 16 \
 --epochs 200 \
@@ -103,6 +111,7 @@ python train.py \
 --data '/data_dir_as_like/LRS3-TED' \
 --data_name 'LRS3'
 --checkpoint_dir 'enter_the_path_to_save' \
+--visual_front_checkpoint 'enter_the_visual_front_checkpoint' \
 --asr_checkpoint 'enter_pretrained_ASR' \
 --batch_size 8 \
 --epochs 200 \
