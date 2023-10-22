@@ -85,7 +85,7 @@ We provide the visual frontend pre-trained on LRS2 and LRS3 using CTC. <br>
 When you training from scratch, it is good to initialize the visual frontend with the checkpoints below.
 
 - [LRS2](https://kaistackr-my.sharepoint.com/:u:/g/personal/ms_k_kaist_ac_kr/EVMp4Hih20hAqyP-I-z03rQBeJELI-KIEGuOMclCJ_Nhfg?e=YuHv44) <br>
-- [LRS3](https://kaistackr-my.sharepoint.com/:u:/g/personal/ms_k_kaist_ac_kr/Ea9mi0aKAa1Gu53jTKiQV0IB6x7s2rI1mG9hkgBdBCYWWg?e=vJXma3)
+- [LRS3](https://kaistackr-my.sharepoint.com/:u:/g/personal/ms_k_kaist_ac_kr/EQa8stMD7F5KteRfwudD20UBeoPwBlyErKldlHaLrmaWFA?e=IkRMFf)
 
 ## Training the Model
 `data_name` argument is used to choose which dataset will be used. (LRS2 or LRS3) <br>
