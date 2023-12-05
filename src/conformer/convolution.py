@@ -20,8 +20,8 @@ from typing import Tuple
 import sys
 sys.path.append('./src')
 
-from conformer.activation import Swish, GLU
-from conformer.modules import Transpose
+from src.conformer.activation import Swish, GLU
+from src.conformer.modules import Transpose
 
 
 class DepthwiseConv1d(nn.Module):

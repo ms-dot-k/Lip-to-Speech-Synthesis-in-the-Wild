@@ -6,13 +6,14 @@ from torch.utils.tensorboard import SummaryWriter
 import numpy as np
 from src.models.model import Visual_front, Conformer_encoder, CTC_classifier, Speaker_embed, Mel_classifier
 from src.models.asr_model import ASR_model
-from ctcdecode import CTCBeamDecoder
+# from ctcdecode import CTCBeamDecoder
 import editdistance
 import os
 from torch.utils.data import DataLoader
 from torch.nn import functional as F
 from src.data.vid_aud_lrs2 import MultiDataset as LRS2_Dataset
 from src.data.vid_aud_lrs3 import MultiDataset as LRS3_Dataset
+from src.data.vid_aud_grid import MultiDataset as grid_Dataset
 from torch.nn import DataParallel as DP
 import torch.nn.parallel
 import time
@@ -27,8 +28,8 @@ import librosa
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--data', default="Data_dir")
-    parser.add_argument('--data_name', default="LRS2", help='LRS2, LRS3')
+    parser.add_argument('--data', default="/work/lixiaolou/data/grid/video/")
+    parser.add_argument('--data_name', default="grid", help='LRS2, LRS3, grid')
     parser.add_argument("--checkpoint_dir", type=str, default='./data/checkpoints/')
     parser.add_argument("--visual_front_checkpoint", type=str, default=None)
     parser.add_argument("--checkpoint", type=str, default=None)
@@ -62,7 +63,6 @@ def parse_args():
     args = parser.parse_args()
     return args
 
-
 def train_net(args):
     torch.backends.cudnn.deterministic = False
     torch.backends.cudnn.benchmark = True
@@ -83,6 +83,15 @@ def train_net(args):
         )
     elif args.data_name == 'LRS3':
         train_data = LRS3_Dataset(
+            data=args.data,
+            mode=args.mode,
+            min_window_size=args.min_window_size,
+            max_window_size=args.max_window_size,
+            max_v_timesteps=args.max_timesteps,
+            augmentations=args.augmentations,
+        )
+    elif args.data_name == 'grid':
+        train_data = grid_Dataset(
             data=args.data,
             mode=args.mode,
             min_window_size=args.min_window_size,
@@ -165,21 +174,22 @@ def train(v_front, mel_layer, ctc_layer, sp_layer, asr_model, train_data, epochs
         num_workers=args.workers,
         pin_memory=True,
         drop_last=True,
-        collate_fn=lambda x: train_data.collate_fn(x),
+        # collate_fn=lambda x: train_data.collate_fn(x),
+        collate_fn = train_data.collate_fn, # use the method directly
     )
 
-    decoder = CTCBeamDecoder(
-        train_data.char_list,
-        model_path=None,
-        alpha=0,
-        beta=0,
-        cutoff_top_n=40,
-        cutoff_prob=1.0,
-        beam_width=30,
-        num_processes=4,
-        blank_id=0,
-        log_probs_input=False
-    )
+    # decoder = CTCBeamDecoder(
+    #     train_data.char_list,
+    #     model_path=None,
+    #     alpha=0,
+    #     beta=0,
+    #     cutoff_top_n=40,
+    #     cutoff_prob=1.0,
+    #     beam_width=30,
+    #     num_processes=4,
+    #     blank_id=0,
+    #     log_probs_input=False
+    # )
 
     stft = copy.deepcopy(train_data.stft).cuda()
 
@@ -254,10 +264,10 @@ def train(v_front, mel_layer, ctc_layer, sp_layer, asr_model, train_data, epochs
             gen_loss.backward()
             optimizer.step()
 
-            beam_results, beam_scores, timesteps, out_lens = decoder.decode(F.softmax(ctc_pred, 2))
-            beam_text = [train_data.arr2txt(beam_results[_][0][:out_lens[_][0]]) for _ in range(vid.size(0))]
-            truth_txt = [train_data.arr2txt(target[_]) for _ in range(vid.size(0))]
-            beam_wer.extend(wer(beam_text, truth_txt))
+            # beam_results, beam_scores, timesteps, out_lens = decoder.decode(F.softmax(ctc_pred, 2))
+            # beam_text = [train_data.arr2txt(beam_results[_][0][:out_lens[_][0]]) for _ in range(vid.size(0))]
+            # truth_txt = [train_data.arr2txt(target[_]) for _ in range(vid.size(0))]
+            # beam_wer.extend(wer(beam_text, truth_txt))
 
             if i % 100 == 0:
                 wav_pred = train_data.inverse_mel(gen_mel.detach()[0], mel_len[0:1], stft)  # 1, 80, T
@@ -273,10 +283,12 @@ def train(v_front, mel_layer, ctc_layer, sp_layer, asr_model, train_data, epochs
                 writer.add_scalar('train/g_ctc_loss', gen_ctc_loss.cpu(), step)
                 if i % 100 == 0:
                     print(f'######## Step(Epoch): {step}({epoch}), Recon Loss: {recon_loss.cpu().item()} #########')
-                    for (predict, truth) in list(zip(beam_text, truth_txt))[:3]:
-                        print(f'VP: {predict.upper()}')
-                        print(f'GT: {truth.upper()}\n')
-                    writer.add_scalar('train/wer', np.array(beam_wer).mean(), step)
+                    # for (predict, truth) in list(zip(beam_text, truth_txt))[:3]:
+                    #     print(f'VP: {predict.upper()}')
+                    #     print(f'GT: {truth.upper()}\n')
+
+                    # writer.add_scalar('train/wer', np.array(beam_wer).mean(), step)
+                    
                     writer.add_image('train_mel/gen', train_data.plot_spectrogram_to_numpy(gen_mel.cpu().detach().numpy()[0]), step)
                     writer.add_image('train_mel/gt', train_data.plot_spectrogram_to_numpy(mel.detach().numpy()[0]), step)
                     writer.add_audio('train_aud/pred_mel', wav_pred[0], global_step=step, sample_rate=16000)
@@ -347,6 +359,17 @@ def validate(v_front, mel_layer, sp_layer, fast_validate=False, epoch=0, writer=
                 max_v_timesteps=args.max_timesteps,
                 augmentations=args.augmentations,
             )
+        
+        elif args.data_name == 'grid':
+            val_data = grid_Dataset(
+                data=args.data,
+                mode='val',
+                min_window_size=args.min_window_size,
+                max_window_size=args.max_window_size,
+                max_v_timesteps=args.max_timesteps,
+                augmentations=args.augmentations,
+            )
+
 
         dataloader = DataLoader(
             val_data,
@@ -354,7 +377,8 @@ def validate(v_front, mel_layer, sp_layer, fast_validate=False, epoch=0, writer=
             batch_size=args.batch_size,
             num_workers=args.workers,
             drop_last=False,
-            collate_fn=lambda x: val_data.collate_fn(x),
+            # collate_fn=lambda x: val_data.collate_fn(x),
+            collate_fn=val_data.collate_fn, # use the method directly
         )
 
         stft = copy.deepcopy(val_data.stft).cuda()

@@ -20,13 +20,13 @@ from typing import Tuple
 import sys
 sys.path.append('./src')
 
-from conformer.feed_forward import FeedForwardModule
-from conformer.attention import MultiHeadedSelfAttentionModule
-from conformer.convolution import (
+from src.conformer.feed_forward import FeedForwardModule
+from src.conformer.attention import MultiHeadedSelfAttentionModule
+from src.conformer.convolution import (
     ConformerConvModule,
     Conv2dSubampling,
 )
-from conformer.modules import (
+from src.conformer.modules import (
     ResidualConnectionModule,
     Linear,
 )

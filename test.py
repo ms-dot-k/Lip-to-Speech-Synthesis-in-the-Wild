@@ -6,13 +6,14 @@ from torch.utils.tensorboard import SummaryWriter
 import numpy as np
 from src.models.model import Visual_front, Conformer_encoder, CTC_classifier, Speaker_embed, Mel_classifier
 from src.models.asr_model import ASR_model
-from ctcdecode import CTCBeamDecoder
+# from ctcdecode import CTCBeamDecoder
 import editdistance
 import os
 from torch.utils.data import DataLoader
 from torch.nn import functional as F
 from src.data.vid_aud_lrs2 import MultiDataset as LRS2_Dataset
 from src.data.vid_aud_lrs3 import MultiDataset as LRS3_Dataset
+from src.data.vid_aud_grid import MultiDataset as grid_Dataset
 from torch.nn import DataParallel as DP
 import torch.nn.parallel
 import time
@@ -27,10 +28,10 @@ import soundfile as sf
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--data', default="Data_dir")
-    parser.add_argument('--data_name', default="LRS2", help='LRS2, LRS3')
+    parser.add_argument('--data', default="/work/lixiaolou/data/grid/video/")
+    parser.add_argument('--data_name', default="grid", help='LRS2, LRS3, grid')
     parser.add_argument("--checkpoint_dir", type=str, default='./data/checkpoints/')
-    parser.add_argument("--checkpoint", type=str, default=None)
+    parser.add_argument("--checkpoint", type=str, default='./checkpoints/Best_0110_stoi_0.671_estoi_0.448_pesq_nan.ckpt')
 
     parser.add_argument("--batch_size", type=int, default=8)
     parser.add_argument("--epochs", type=int, default=150)
@@ -115,6 +116,15 @@ def test(v_front, mel_layer, sp_layer, fast_validate=False):
                 max_v_timesteps=args.max_timesteps,
                 augmentations=args.augmentations,
             )
+        elif args.data_name == 'grid':
+            val_data = grid_Dataset(
+            data=args.data,
+            mode=args.mode,
+            min_window_size=args.min_window_size,
+            max_window_size=args.max_window_size,
+            max_v_timesteps=args.max_timesteps,
+            augmentations=args.augmentations,
+        )
 
         dataloader = DataLoader(
             val_data,
@@ -122,7 +132,8 @@ def test(v_front, mel_layer, sp_layer, fast_validate=False):
             batch_size=args.batch_size,
             num_workers=args.workers,
             drop_last=False,
-            collate_fn=lambda x: val_data.collate_fn(x),
+            # collate_fn=lambda x: val_data.collate_fn(x),
+            collate_fn = val_data.collate_fn,
         )
 
         stft = copy.deepcopy(val_data.stft).cuda()
@@ -167,26 +178,28 @@ def test(v_front, mel_layer, sp_layer, fast_validate=False):
                     continue
 
                 m_name, v_name, file_name = f_name[_].split('/')
-                if not os.path.exists(f'./test_{args.data_name}/mel/{m_name}/{v_name}'):
-                    os.makedirs(f'./test_{args.data_name}/mel/{m_name}/{v_name}')
-                np.savez(f'./test_{args.data_name}/mel/{m_name}/{v_name}/{file_name}.npz',
+                if not os.path.exists(f'./generate/test_{args.data_name}/mel/{m_name}/{v_name}'):
+                    print('0')
+                    os.makedirs(f'./generate/test_{args.data_name}/mel/{m_name}/{v_name}')
+                np.savez(f'./generate/test_{args.data_name}/mel/{m_name}/{v_name}/{file_name}.npz',
                          mel=g_mel[_, :, :, :mel_len[_]].detach().cpu().numpy())
 
-                if not os.path.exists(f'./test_{args.data_name}/wav/{m_name}/{v_name}'):
-                    os.makedirs(f'./test_{args.data_name}/wav/{m_name}/{v_name}')
-                sf.write(f'./test_{args.data_name}/wav/{m_name}/{v_name}/{file_name}.wav', wav_pred[_], 16000, subtype='PCM_16')
+                if not os.path.exists(f'./generate/test_{args.data_name}/wav/{m_name}/{v_name}'):
+                    os.makedirs(f'./generate/test_{args.data_name}/wav/{m_name}/{v_name}')
+                sf.write(f'./generate/test_{args.data_name}/wav/{m_name}/{v_name}/{file_name}.wav', wav_pred[_], 16000, subtype='PCM_16')
 
             if i >= max_batches:
                 break
 
         print('val_stoi:', np.mean(np.array(stoi_list)))
         print('val_estoi:', np.mean(np.array(estoi_list)))
-        print('val_pesq:', np.mean(np.array(pesq_list)))
+        # print('val_pesq:', np.mean(np.array(pesq_list)))
         with open(f'./test_{args.data_name}.txt', 'w') as f:
             f.write(f'STOI : {np.mean(stoi_list)}\n')
             f.write(f'ESTOI : {np.mean(estoi_list)}\n')
-            f.write(f'PESQ : {np.mean(pesq_list)}\n')
-        return np.mean(np.array(val_loss)), np.mean(np.array(stoi_list)), np.mean(np.array(estoi_list)), np.mean(np.array(pesq_list))
+            # f.write(f'PESQ : {np.mean(pesq_list)}\n')
+        # return np.mean(np.array(val_loss)), np.mean(np.array(stoi_list)), np.mean(np.array(estoi_list)), np.mean(np.array(pesq_list))
+        return np.mean(np.array(val_loss)), np.mean(np.array(stoi_list)), np.mean(np.array(estoi_list))
 
 
 def wer(predict, truth):

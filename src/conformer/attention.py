@@ -22,8 +22,8 @@ from typing import Optional
 import sys
 sys.path.append('./src')
 
-from conformer.embedding import PositionalEncoding
-from conformer.modules import Linear
+from src.conformer.embedding import PositionalEncoding
+from src.conformer.modules import Linear
 
 
 class RelativeMultiHeadAttention(nn.Module):
