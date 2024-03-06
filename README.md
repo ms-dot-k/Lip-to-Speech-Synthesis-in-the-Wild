@@ -76,7 +76,7 @@ Moreover, put the train/val/test splits to <br>
 ./data/LRS3/*.txt
 ```
 
-For the LRS2, we use the original splits of the dataset provided. [LRS2](https://kaistackr-my.sharepoint.com/:u:/g/personal/ms_k_kaist_ac_kr/EYr_pFzvluxJumdVbQ7c6iwB0Va7rRheS-NIZigZMejOyQ?e=WYsPvX) <br>
+For the LRS2, we use the original splits of the dataset provided. <br>
 For the LRS3, we use the unseen splits setting of [SVTS](https://arxiv.org/abs/2205.02058), where they are placed in the directory already.
 
 ## Pretrained Visual Frontend
