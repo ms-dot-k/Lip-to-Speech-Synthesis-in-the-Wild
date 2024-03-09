@@ -32,8 +32,8 @@ LRS2/LRS3 dataset can be downloaded from the below link.
 - https://www.robots.ox.ac.uk/~vgg/data/lip_reading/
 
 For data preprocessing, download the lip coordinate of LRS2 and LRS3 from the below links. 
-- [LRS2](https://kaistackr-my.sharepoint.com/:u:/g/personal/ms_k_kaist_ac_kr/EYr_pFzvluxJumdVbQ7c6iwB0Va7rRheS-NIZigZMejOyQ?e=WYsPvX)
-- [LRS3](https://kaistackr-my.sharepoint.com/:u:/g/personal/ms_k_kaist_ac_kr/EW05i6UFVVlPlpdyWEmSvtMBEelCSh6Wm2jJTw4MgIGwgQ?e=ReY3k4)
+- [LRS2](https://drive.google.com/file/d/10cnzNRRr-LQbS5kjc393FLvmNxPJ_u1N/view?usp=sharing)
+- [LRS3](https://drive.google.com/file/d/10eAVKBuy7TyslcPdv4xmf5dxSYx4NMrS/view?usp=sharing)
 
 Unzip and put the files to
 ```
@@ -84,8 +84,8 @@ Training to read sentences using CTC loss is hard to find optimization points. <
 We provide the visual frontend pre-trained on LRS2 and LRS3 using CTC. <br>
 When you training from scratch, it is good to initialize the visual frontend with the checkpoints below.
 
-- [LRS2](https://kaistackr-my.sharepoint.com/:u:/g/personal/ms_k_kaist_ac_kr/EVMp4Hih20hAqyP-I-z03rQBeJELI-KIEGuOMclCJ_Nhfg?e=YuHv44) <br>
-- [LRS3](https://kaistackr-my.sharepoint.com/:u:/g/personal/ms_k_kaist_ac_kr/EQa8stMD7F5KteRfwudD20UBeoPwBlyErKldlHaLrmaWFA?e=IkRMFf)
+- [LRS2](https://drive.google.com/file/d/1-I_v_RA_A73hCGqZjSP2nYLeLiR0SP7X/view?usp=sharing) <br>
+- [LRS3](https://drive.google.com/file/d/1-jq2vPc3_znejLsuFEq2PueN5saqtkN3/view?usp=sharing)
 
 ## Training the Model
 `data_name` argument is used to choose which dataset will be used. (LRS2 or LRS3) <br>
@@ -171,10 +171,10 @@ The pre-trained ASR models for output-level content supervision and lip-to-speec
 
 | Model |       Dataset       |   STOI   |
 |:-------------------:|:-------------------:|:--------:|
-|ASR|LRS2 |   [Link](https://kaistackr-my.sharepoint.com/:u:/g/personal/ms_k_kaist_ac_kr/EYjyTk0Bxy9CqLVmshqVXWEBlZc2Tq_4JnC4ox1tQ7jXOA?e=s8rZMW)  |
-|ASR|LRS3 |   [Link](https://kaistackr-my.sharepoint.com/:u:/g/personal/ms_k_kaist_ac_kr/EcPkEXJ9UgNInxbJX_eh5aYBoZDLnxMY8AAEDNEiyBEJjw?e=uytxOK)  |
-|Lip2Speech|LRS2 |   [0.526](https://kaistackr-my.sharepoint.com/:u:/g/personal/ms_k_kaist_ac_kr/EWD7vxY4S7pPjNE8dUwSMJwBdgPFunw62HsDLIuUlWcKAQ?e=XYdHfn)  |
-|Lip2Speech|LRS3 |   [0.497](https://kaistackr-my.sharepoint.com/:u:/g/personal/ms_k_kaist_ac_kr/Ea9mi0aKAa1Gu53jTKiQV0IB6x7s2rI1mG9hkgBdBCYWWg?e=SRcK6o)  |
+|ASR|LRS2 |   [Link](https://drive.google.com/file/d/1-A1FIy8tLumY0otQQzX-MHoG5SM7E9u5/view?usp=sharing)  |
+|ASR|LRS3 |   [Link](https://drive.google.com/file/d/1-ba1I2S9vI5v5R6uQXo4E8f3rTuDS9S0/view?usp=sharing)  |
+|Lip2Speech|LRS2 |   [0.526](https://drive.google.com/file/d/1-IPQ5DF3iwkeVRlbNLR58G8rZJ6kwe26/view?usp=sharing)  |
+|Lip2Speech|LRS3 |   [0.497](https://drive.google.com/file/d/1-hSBVopSc7gqELPvWbYll_xh-0ESKFoP/view?usp=sharing)  |
 
 
 ## Citation
